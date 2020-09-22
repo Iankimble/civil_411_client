@@ -1,0 +1,15 @@
+.nav {
+  margin: 5px;
+}
+
+.cardTitle {
+  height: 45px;
+}
+
+.cardText {
+  height: 100px;
+}
+
+.cardButton {
+  width: 200px;
+}

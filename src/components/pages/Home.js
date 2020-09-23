@@ -9,7 +9,9 @@ import {
   Card,
 } from "react-bootstrap";
 import { getLocalElections, getNatElections, getUserReps } from "../../API";
-import style from "../style/PrimaryStyling.module.css";
+// import style from "../style/PrimaryStyling.module.css";
+import Loading from "./Loading";
+import LandingLink from "./LandingLinks";
 
 class HomePage extends Component {
   constructor() {
@@ -19,9 +21,21 @@ class HomePage extends Component {
       pollingLocation: [],
       elections: [],
       reps: [],
+      showLinks: true,
+      loading: false,
+      results: false,
       error: "",
     };
   }
+
+  componentDidMount = () => (
+    <div>
+      {alert(
+        "This application is still in development and will be done soon. I apologize for the inconvenience."
+      )}
+    </div>
+  );
+
   handleChange = (name) => (event) => {
     this.setState({ error: "" });
     this.setState({ [name]: event.target.value });
@@ -32,11 +46,19 @@ class HomePage extends Component {
     console.log(this.state.address);
     let userData = this.state.address;
 
+    this.setState({
+      showLinks: false,
+      loading: true,
+    });
+
     getNatElections(userData).then((data) => {
       if (userData.error) this.setState({ error: data.error });
       else {
         this.setState({
           elections: data,
+          showLinks: false,
+          showResults: true,
+          loading: false,
         });
       }
       //National elections
@@ -48,6 +70,8 @@ class HomePage extends Component {
       else {
         this.setState({
           pollingLocation: data,
+          results: true,
+          loading: false,
         });
       }
       // Address and Polling location
@@ -59,6 +83,8 @@ class HomePage extends Component {
       else {
         this.setState({
           reps: data,
+          loading: false,
+          results: true,
         });
       }
       // Representatives on State and Local Level
@@ -73,10 +99,12 @@ class HomePage extends Component {
           <h1>Welcome to Civil 411</h1>
           <Form onSubmit={this.handleSubmit}>
             <Form.Group role="form">
-              <Form.Label>Enter your address</Form.Label>
+              <Form.Label>
+                Enter your address to find your nearest voting station.
+              </Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Address"
+                placeholder="Enter your address here..."
                 onChange={this.handleChange("address")}
                 value={address}
               />
@@ -90,94 +118,65 @@ class HomePage extends Component {
     </Row>
   );
 
+  results = () => (
+    <div>
+      <Jumbotron>
+        <h2>Nearest Polling Location</h2>
+        <p>
+          Shows user where they're nearest voting station is. Will use google
+          maps
+        </p>
+      </Jumbotron>
+      <Row>
+        <Col>
+          <Card style={{ width: "18rem" }}>
+            <Card.Img variant="top" src="holder.js/100px180" />
+            <Card.Body>
+              <Card.Title>Elections & Contests</Card.Title>
+              <Card.Text>Map of upcoming contests and elections</Card.Text>
+              <Button variant="primary">Go somewhere</Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Card style={{ width: "18rem" }}>
+            <Card.Img variant="top" src="holder.js/100px180" />
+            <Card.Body>
+              <Card.Title>your local and federal officials</Card.Title>
+              <Card.Text>
+                <ul>
+                  <li>name</li>
+                  <li>party</li>
+                  <li>photourl</li>
+                  <li>website</li>
+                  <li>phone</li>
+                  <li>address</li>
+                </ul>
+              </Card.Text>
+              <Button variant="primary">Go somewhere</Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </div>
+  );
+
   render() {
     const { address } = this.state.address;
+    if (this.state.rsults === true) {
+      this.results();
+    }
+
     return (
       <div style={{ textAlign: "center" }}>
         <Container fluid>
           {this.form(address)}
           <hr />
-
-          {/*Links*/}
-          <Row
-            style={{
-              textAlign: "center",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <Card style={{ width: "16rem", margin: "5px" }}>
-              <Card.Img variant="top" src="holder.js/100px180" />
-              <Card.Body>
-                <Card.Title className={style.cardTitle}>
-                  <b>Register to Vote</b>
-                </Card.Title>
-                <Card.Text className={style.cardText}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </Card.Text>
-                <Button
-                  href="https://www.pavoterservices.pa.gov/pages/VoterRegistrationApplication.aspx"
-                  target="_blank"
-                  className={style.cardButton}
-                >
-                  Register
-                </Button>
-              </Card.Body>
-            </Card>
-
-            <Card style={{ width: "16rem", margin: "5px" }}>
-              <Card.Img variant="top" src="holder.js/100px180" />
-              <Card.Body>
-                <Card.Title className={style.carTitle}>
-                  <b>Check Voter Registration Status</b>
-                </Card.Title>
-                <Card.Text className={style.cardText}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </Card.Text>
-                <Button
-                  href="https://www.pavoterservices.pa.gov/pages/voterregistrationstatus.aspx"
-                  target="_blank"
-                  className={style.cardButton}
-                >
-                  Check Status
-                </Button>
-              </Card.Body>
-            </Card>
-
-            <Card style={{ width: "16rem", margin: "5px" }}>
-              <Card.Img variant="top" src="holder.js/100px180" />
-              <Card.Body>
-                <Card.Title className={style.cardTitle}>
-                  <b>Political litercay Resources</b>
-                </Card.Title>
-                <Card.Text className={style.cardText}>
-                  blog that teaches users about state and local politics
-                </Card.Text>
-                <Button className={style.cardButton}>Learn</Button>
-              </Card.Body>
-            </Card>
-
-            <Card style={{ width: "16rem", margin: "5px" }}>
-              <Card.Img variant="top" src="holder.js/100px180" />
-              <Card.Body>
-                <Card.Title className={style.cardTitle}>
-                  <b>Petitions</b>
-                </Card.Title>
-                <Card.Text className={style.cardText}>
-                  blog that teaches users about state and local politics
-                </Card.Text>
-                <Button
-                  href="https://www.change.org/start-a-petition?utm_source=sem&utm_medium=google_ad&utm_campaign=G%3ESearch%3ESAP%3EUS%3ENonBrand%3EExact&utm_term=petition|e|AG:82835045968|AD:378316637681&utm_content=2020_09_22&gclid=EAIaIQobChMIib-a7ar96wIVio7ICh3oQwohEAAYASAAEgLEyvD_BwE"
-                  target="_blank"
-                  className={style.cardButton}
-                >
-                  Make a difference
-                </Button>
-              </Card.Body>
-            </Card>
-          </Row>
+          {this.state.showLinks ? <LandingLink /> : null}
+          {this.state.loading ? <Loading /> : null}
+          {this.state.showResults ? this.results() : null}
         </Container>
       </div>
     );

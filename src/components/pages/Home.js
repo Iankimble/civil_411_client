@@ -14,6 +14,7 @@ import flag from "../style/united-states.png";
 import Loading from "./Loading";
 import LandingLink from "./LandingLinks";
 import { Fade } from "react-reveal";
+import moment from "moment";
 
 class HomePage extends Component {
   constructor() {
@@ -51,7 +52,7 @@ class HomePage extends Component {
         this.setState({ error: data.error });
       } else {
         this.setState({
-          elections: data,
+          elections: data.elections,
           showLinks: false,
           showResults: true,
           loading: false,
@@ -65,7 +66,7 @@ class HomePage extends Component {
       if (userData.error) this.setState({ error: data.error });
       else {
         this.setState({
-          mainData: data,
+          mainData: data.contests,
           pollingLocation: data.pollingLocations[0].address,
           results: true,
           loading: false,
@@ -120,33 +121,78 @@ class HomePage extends Component {
     </Row>
   );
 
+  electMap = () => {
+    return (
+      <div>
+        {this.state.elections
+          .slice(1)
+          .map((elect) => (
+            <Card key={elect.id}>
+              <Card.Header as="h5">{elect.name}</Card.Header>
+              <Card.Body>
+                <Card.Title></Card.Title>
+                <Card.Text>
+                  {moment(elect.electionDay).format("MMMM Do YYYY")}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          ))
+          .reverse()}
+      </div>
+    );
+  };
+
+  contestMap = () => {
+    return (
+      <div>
+        {this.state.mainData.map((contest) => (
+          <div>
+            <Card key={contest.id}>
+              <Card.Header as="h5">{contest.office}</Card.Header>
+              <Card.Title>
+                {contest.district.name} {contest.district.scoper}
+              </Card.Title>
+              <Card.Body>
+                <Card.Text></Card.Text>
+                <Button>Learn More</Button>
+              </Card.Body>
+            </Card>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   repMap = () => {
     return (
       <div>
         <CardColumns>
-          {this.state.reps.map((rep, index) => (
+          {this.state.reps.map((rep) => (
             <Fade bottom>
-              <Card key={rep.id}>
-                <Card.Img
-                  variant="top"
-                  src={rep.photoUrl || flag}
-                  style={{ height: "250px", width: "auto", padding: "10px" }}
-                />
-                <Card.Body>
-                  <Card.Title>{rep.name}</Card.Title>
-                  <Card.Text>
-                    <h3> {rep.party}</h3>
-                    <h5>Office number {[rep.phones]}</h5>
-                  </Card.Text>
-                  <Button
-                    variant="primary"
-                    href={[rep.urls].toString()}
-                    target="_blank"
-                  >
-                    Representatives Website
-                  </Button>
-                </Card.Body>
-              </Card>
+              <div key={rep.id}>
+                <Card key={rep.id}>
+                  <Card.Img
+                    variant="top"
+                    src={rep.photoUrl || flag}
+                    style={{ height: "150px", width: "auto", padding: "10px" }}
+                  />
+                  <Card.Body>
+                    <Card.Title>{rep.name}</Card.Title>
+                    <Card.Text>
+                      <> {rep.party}</>
+                      <br />
+                      <>Office number {[rep.phones]}</>
+                    </Card.Text>
+                    <Button
+                      variant="primary"
+                      href={[rep.urls].toString()}
+                      target="_blank"
+                    >
+                      Representatives Website
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </div>
             </Fade>
           ))}
         </CardColumns>
@@ -168,13 +214,22 @@ class HomePage extends Component {
       <Row>
         <Col>
           <h1>Upcoming Elections</h1>
-          <Jumbotron style={{ backgroundColor: "transparent" }}></Jumbotron>
+          <Jumbotron style={{ backgroundColor: "transparent" }}>
+            {this.electMap()}
+          </Jumbotron>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <h1>Upcoming Contests</h1>
+          <Jumbotron style={{ backgroundColor: "transparent" }}>
+            {this.contestMap()}
+          </Jumbotron>
         </Col>
       </Row>
       <Row>
         <Col>
           <h1>Your Representatives</h1>
-          <br />
           <br />
           {this.repMap()}
         </Col>

@@ -1,8 +1,32 @@
 # Civil 411
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### SITE STILL IN DEVELOPMENT
 
-## Available Scripts
+[![Netlify Status](https://api.netlify.com/api/v1/badges/698d48db-2661-4318-a11d-23aca01d484f/deploy-status)](https://app.netlify.com/sites/romantic-swirles-e7e20c/deploys)
+
+## Table of Contents
+
+1. Project Summary
+2. Technology and Tools
+3. Installation and Setup
+4. Features
+5. Todos
+6. Credits
+7. Lisense
+
+## Project Summary
+
+Web application that allows users to find their nearest polling location, current local, state, and federal representatives and upcoming elections using the google civic information API. The web application also features an encycopedia of political concepts to help educate the user.
+
+## Technology and Tools
+
+React.js
+react router dom
+react string replace
+react bootstrap
+Google civic information API
+
+## Installation and Setup
 
 In the project directory, you can run:
 
@@ -39,32 +63,17 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Features
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Google civic API: allows users to find nearest polling locations, local, federal and state representatives and upcoming elections.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Todos
 
-### Code Splitting
+1. Political encyclopedia: build a database that contains political concepts in an easy to understand manner.
+2. Representatives office: Must pair the office with the official; i.e official = john smith, office= city council.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Credits
 
-### Analyzing the Bundle Size
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## License

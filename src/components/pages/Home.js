@@ -7,16 +7,19 @@ import {
   Row,
   Col,
   Card,
+  CardColumns,
 } from "react-bootstrap";
 import { getLocalElections, getNatElections, getUserReps } from "../../API";
 // import style from "../style/PrimaryStyling.module.css";
 import Loading from "./Loading";
 import LandingLink from "./LandingLinks";
+import { Fade } from "react-reveal";
 
 class HomePage extends Component {
   constructor() {
     super();
     this.state = {
+      mainData: [],
       address: "",
       pollingLocation: [],
       elections: [],
@@ -27,14 +30,6 @@ class HomePage extends Component {
       error: "",
     };
   }
-
-  componentDidMount = () => (
-    <div>
-      {alert(
-        "This application is still in development and will be done soon. I apologize for the inconvenience."
-      )}
-    </div>
-  );
 
   handleChange = (name) => (event) => {
     this.setState({ error: "" });
@@ -52,8 +47,9 @@ class HomePage extends Component {
     });
 
     getNatElections(userData).then((data) => {
-      if (userData.error) this.setState({ error: data.error });
-      else {
+      if (!userData) {
+        this.setState({ error: data.error });
+      } else {
         this.setState({
           elections: data,
           showLinks: false,
@@ -69,20 +65,24 @@ class HomePage extends Component {
       if (userData.error) this.setState({ error: data.error });
       else {
         this.setState({
-          pollingLocation: data,
+          mainData: data,
+          pollingLocation: data.pollingLocations[0].address,
           results: true,
           loading: false,
         });
       }
       // Address and Polling location
       console.log(this.state.pollingLocation);
+      console.log(this.state.mainData);
     });
 
     getUserReps(userData).then((data) => {
-      if (userData.error) this.setState({ error: data.error });
-      else {
+      if (userData.error) {
+        this.setState({ error: data.error });
+        console.log("sorry somthing went wrong. Try again.");
+      } else {
         this.setState({
-          reps: data,
+          reps: data.officials,
           loading: false,
           results: true,
         });
@@ -100,7 +100,9 @@ class HomePage extends Component {
           <Form onSubmit={this.handleSubmit}>
             <Form.Group role="form">
               <Form.Label>
-                Enter your address to find your nearest voting station.
+                <b>
+                  <i>Enter your address to find your nearest voting station.</i>
+                </b>
               </Form.Label>
               <Form.Control
                 type="text"
@@ -118,46 +120,63 @@ class HomePage extends Component {
     </Row>
   );
 
+  repMap = () => {
+    return (
+      <div>
+        <CardColumns>
+          {this.state.reps.map((rep, index) => (
+            <Fade bottom>
+              <Card key={rep.id}>
+                <Card.Img
+                  variant="top"
+                  src={rep.photoUrl}
+                  style={{ height: "250px", width: "auto" }}
+                />
+                <Card.Body>
+                  <Card.Title>{rep.name}</Card.Title>
+                  <Card.Text>
+                    <h3> {rep.party}</h3>
+                    <h5>Office number {[rep.phones]}</h5>
+                  </Card.Text>
+                  <Button
+                    variant="primary"
+                    href={[rep.urls].toString()}
+                    target="_blank"
+                  >
+                    Representatives Website
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Fade>
+          ))}
+        </CardColumns>
+      </div>
+    );
+  };
+
   results = () => (
     <div>
-      <Jumbotron>
-        <h2>Nearest Polling Location</h2>
-        <p>
-          Shows user where they're nearest voting station is. Will use google
-          maps
-        </p>
-      </Jumbotron>
+      <Fade bottom>
+        <Jumbotron>
+          <h1>Nearest Polling Location</h1>
+          {this.state.pollingLocation.locationName}
+          <br />
+          {this.state.pollingLocation.line1}, {this.state.pollingLocation.city}
+          {this.state.pollingLocation.state}, {this.state.pollingLocation.zip}
+        </Jumbotron>
+      </Fade>
       <Row>
         <Col>
-          <Card style={{ width: "18rem" }}>
-            <Card.Img variant="top" src="holder.js/100px180" />
-            <Card.Body>
-              <Card.Title>Elections & Contests</Card.Title>
-              <Card.Text>Map of upcoming contests and elections</Card.Text>
-              <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-          </Card>
+          <h1>Upcoming Elections</h1>
+          <Jumbotron></Jumbotron>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Card style={{ width: "18rem" }}>
-            <Card.Img variant="top" src="holder.js/100px180" />
-            <Card.Body>
-              <Card.Title>your local and federal officials</Card.Title>
-              <Card.Text>
-                <ul>
-                  <li>name</li>
-                  <li>party</li>
-                  <li>photourl</li>
-                  <li>website</li>
-                  <li>phone</li>
-                  <li>address</li>
-                </ul>
-              </Card.Text>
-              <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-          </Card>
+          <h1>Your Representatives</h1>
+          <br />
+          <br />
+          {this.repMap()}
         </Col>
       </Row>
     </div>
@@ -168,7 +187,6 @@ class HomePage extends Component {
     if (this.state.rsults === true) {
       this.results();
     }
-
     return (
       <div style={{ textAlign: "center" }}>
         <Container fluid>

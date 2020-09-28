@@ -4,7 +4,8 @@ export const getNatElections = () => {
           ${process.env.REACT_APP_GOOGLE_API_KEY}`
   ).then((res) => {
     if (res.status >= 400) {
-      throw new Error("data could not be returned");
+      return Promise.reject("some error happend maybe 404");
+      // throw new Error("data could not be returned");
     }
     return res.json();
   });
@@ -16,7 +17,8 @@ export const getLocalElections = (data) => {
     ${process.env.REACT_APP_GOOGLE_API_KEY}`
   ).then((res) => {
     if (res.status >= 400) {
-      throw new Error("data could not be returned");
+      return Promise.reject("some error happend maybe 404");
+      // throw new Error("data could not be returned");
     }
     return res.json();
   });
@@ -28,7 +30,8 @@ export const getUserReps = (data) => {
     ${process.env.REACT_APP_GOOGLE_API_KEY}`
   ).then((res) => {
     if (res.status >= 400) {
-      throw new Error("data could not be returned");
+      return Promise.reject("some error happend maybe 404");
+      // throw new Error("data could not be returned");
     }
     return res.json();
   });

@@ -10,7 +10,7 @@ import {
   CardColumns,
 } from "react-bootstrap";
 import { getLocalElections, getNatElections, getUserReps } from "../../API";
-// import style from "../style/PrimaryStyling.module.css";
+import flag from "../style/united-states.png";
 import Loading from "./Loading";
 import LandingLink from "./LandingLinks";
 import { Fade } from "react-reveal";
@@ -129,8 +129,8 @@ class HomePage extends Component {
               <Card key={rep.id}>
                 <Card.Img
                   variant="top"
-                  src={rep.photoUrl}
-                  style={{ height: "250px", width: "auto" }}
+                  src={rep.photoUrl || flag}
+                  style={{ height: "250px", width: "auto", padding: "10px" }}
                 />
                 <Card.Body>
                   <Card.Title>{rep.name}</Card.Title>
@@ -157,7 +157,7 @@ class HomePage extends Component {
   results = () => (
     <div>
       <Fade bottom>
-        <Jumbotron>
+        <Jumbotron style={{ backgroundColor: "transparent" }}>
           <h1>Nearest Polling Location</h1>
           {this.state.pollingLocation.locationName}
           <br />
@@ -168,7 +168,7 @@ class HomePage extends Component {
       <Row>
         <Col>
           <h1>Upcoming Elections</h1>
-          <Jumbotron></Jumbotron>
+          <Jumbotron style={{ backgroundColor: "transparent" }}></Jumbotron>
         </Col>
       </Row>
       <Row>

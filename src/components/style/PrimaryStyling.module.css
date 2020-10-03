@@ -13,3 +13,33 @@
 .cardButton {
   width: 200px;
 }
+
+.candidateImg {
+  height: 150px;
+  width: auto;
+  padding: 10px;
+}
+
+@media (min-width: 320px) {
+  .candidateImg {
+    height: 285px;
+    width: auto;
+    padding: 10px;
+  }
+}
+
+@media (min-width: 400px) {
+  .candidateImg {
+    height: 375px;
+    width: auto;
+    padding: 10px;
+  }
+}
+
+@media (min-width: 500px) {
+  .candidateImg {
+    height: 150px;
+    width: auto;
+    padding: 10px;
+  }
+}

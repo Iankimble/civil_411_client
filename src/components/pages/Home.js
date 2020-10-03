@@ -15,6 +15,9 @@ import Loading from "./Loading";
 import LandingLink from "./LandingLinks";
 import { Fade } from "react-reveal";
 import moment from "moment";
+import Geocode from "react-geocode";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import style from "../style/PrimaryStyling.module.css";
 
 class HomePage extends Component {
   constructor() {
@@ -23,12 +26,16 @@ class HomePage extends Component {
       mainData: [],
       address: "",
       pollingLocation: [],
+      addressTwo: "",
       elections: [],
       reps: [],
       showLinks: true,
       loading: false,
       results: false,
+      showMap: false,
       error: "",
+      pollLat: "",
+      pollLon: "",
     };
   }
 
@@ -39,14 +46,15 @@ class HomePage extends Component {
 
   submit = (event) => {
     event.preventDefault();
-    console.log(this.state.address);
     let userData = this.state.address;
 
     this.setState({
       showLinks: false,
       loading: true,
+      showMap: true,
     });
 
+    //National elections
     getNatElections(userData).then((data) => {
       if (!userData) {
         this.setState({ error: data.error });
@@ -58,10 +66,9 @@ class HomePage extends Component {
           loading: false,
         });
       }
-      //National elections
-      console.log(this.state.elections);
     });
 
+    // Address and Polling location also returns local contests
     getLocalElections(userData).then((data) => {
       if (userData.error) this.setState({ error: data.error });
       else {
@@ -70,13 +77,29 @@ class HomePage extends Component {
           pollingLocation: data.pollingLocations[0].address,
           results: true,
           loading: false,
+          addressTwo: data.pollingLocations[0].address.line1,
         });
+        console.log(this.state.mainData);
+        /*Function the converts the address of the polling location into a geographical coordinate*/
+        Geocode.setRegion("es");
+        Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAP_KEY);
+        Geocode.fromAddress(this.state.addressTwo).then(
+          (response) => {
+            const { lat, lng } = response.results[0].geometry.location;
+            console.log(lat, lng);
+            this.setState({
+              pollLat: lat,
+              pollLon: lng,
+            });
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
       }
-      // Address and Polling location
-      console.log(this.state.pollingLocation);
-      console.log(this.state.mainData);
     });
 
+    // Representatives on State and Local Level
     getUserReps(userData).then((data) => {
       if (userData.error) {
         this.setState({ error: data.error });
@@ -88,15 +111,13 @@ class HomePage extends Component {
           results: true,
         });
       }
-      // Representatives on State and Local Level
-      console.log(this.state.reps);
     });
   };
 
   form = (address) => (
     <Row>
       <Col>
-        <Jumbotron>
+        <Jumbotron style={{ backgroundColor: "transparent" }}>
           <h1>Welcome to Civil 411</h1>
           <Form onSubmit={this.handleSubmit}>
             <Form.Group role="form">
@@ -153,8 +174,29 @@ class HomePage extends Component {
                 {contest.district.name} {contest.district.scoper}
               </Card.Title>
               <Card.Body>
-                <Card.Text></Card.Text>
-                <Button>Learn More</Button>
+                <Col>
+                  <Card>
+                    <Card.Body>
+                      {contest.candidates.map((candidate, i) => (
+                        <div key={i}>
+                          <Card.Title>{candidate.name}</Card.Title>
+                          <Card.Text>
+                            {candidate.party}
+                            <br />
+                            <Button
+                              variant="primary"
+                              href={candidate.candidateUrl}
+                              target="_blank"
+                            >
+                              Candidate's Website
+                            </Button>
+                          </Card.Text>
+                          <hr />
+                        </div>
+                      ))}
+                    </Card.Body>
+                  </Card>
+                </Col>
               </Card.Body>
             </Card>
           </div>
@@ -167,16 +209,16 @@ class HomePage extends Component {
     return (
       <div>
         <CardColumns>
-          {this.state.reps.map((rep) => (
+          {this.state.reps.map((rep, id) => (
             <Fade bottom>
-              <div key={rep.id}>
+              <div key={id}>
                 <Card key={rep.id}>
                   <Card.Img
                     variant="top"
                     src={rep.photoUrl || flag}
-                    style={{ height: "150px", width: "auto", padding: "10px" }}
+                    className={style.candidateImg}
                   />
-                  <Card.Body>
+                  <Card.Body key={rep.id}>
                     <Card.Title>{rep.name}</Card.Title>
                     <Card.Text>
                       <> {rep.party}</>
@@ -242,6 +284,17 @@ class HomePage extends Component {
     if (this.state.rsults === true) {
       this.results();
     }
+
+    const containerStyle = {
+      width: "auto",
+      height: "400px",
+    };
+
+    const center = {
+      lat: this.state.pollLat,
+      lng: this.state.pollLon,
+    };
+
     return (
       <div style={{ textAlign: "center" }}>
         <Container fluid>
@@ -249,6 +302,26 @@ class HomePage extends Component {
           <hr />
           {this.state.showLinks ? <LandingLink /> : null}
           {this.state.loading ? <Loading /> : null}
+          {this.state.showMap ? (
+            <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAP_KEY}>
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={center}
+                zoom={15}
+                position={(this.state.pollLat, this.state.pollLon)}
+                style={{ backgroundColor: "transparent" }}
+              >
+                <Marker
+                  position={{
+                    lat: this.state.pollLat,
+                    lng: this.state.pollLon,
+                  }}
+                  title="Voting location"
+                  label={this.state.addressTwo}
+                ></Marker>
+              </GoogleMap>
+            </LoadScript>
+          ) : null}
           {this.state.showResults ? this.results() : null}
         </Container>
       </div>

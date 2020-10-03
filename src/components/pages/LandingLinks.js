@@ -1,6 +1,9 @@
 import React from "react";
 import { Row, Card, Button } from "react-bootstrap";
 import style from "../style/PrimaryStyling.module.css";
+import vote from "../style/vote.png";
+import register from "../style/register-to-vote.jpg";
+import change from "../style/CHANGEorg.png";
 
 const LandingLinks = () => (
   <Row
@@ -10,28 +13,13 @@ const LandingLinks = () => (
       justifyContent: "center",
     }}
   >
+    {/* Card that re-directs user to federal voter registration page*/}
     <Card style={{ width: "16rem", margin: "5px" }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
-      <Card.Body>
-        <Card.Title className={style.cardTitle}>
-          <b>Register to Vote</b>
-        </Card.Title>
-        <Card.Text className={style.cardText}>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </Card.Text>
-        <Button
-          href="https://www.pavoterservices.pa.gov/pages/VoterRegistrationApplication.aspx"
-          target="_blank"
-          className={style.cardButton}
-        >
-          Register
-        </Button>
-      </Card.Body>
-    </Card>
-
-    <Card style={{ width: "16rem", margin: "5px" }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
+      <Card.Img
+        variant="top"
+        src={vote}
+        style={{ height: "150px", width: "auto" }}
+      />
       <Card.Body>
         <Card.Title className={style.carTitle}>
           <b>Check Voter Registration Status</b>
@@ -50,7 +38,34 @@ const LandingLinks = () => (
       </Card.Body>
     </Card>
 
+    {/* Card that re-directs user to PA state voter registration page*/}
     <Card style={{ width: "16rem", margin: "5px" }}>
+      <Card.Img
+        variant="top"
+        src={register}
+        style={{ height: "150px", width: "auto" }}
+      />
+      <Card.Body>
+        <Card.Title className={style.cardTitle}>
+          <b>Register to Vote</b>
+        </Card.Title>
+        <Card.Text className={style.cardText}>
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </Card.Text>
+        <Button
+          href="https://www.pavoterservices.pa.gov/pages/VoterRegistrationApplication.aspx"
+          target="_blank"
+          className={style.cardButton}
+        >
+          Register
+        </Button>
+      </Card.Body>
+    </Card>
+
+    {/* Card that will redirect user to a component that with a custom API that encycopedic political information.*/}
+
+    {/* <Card style={{ width: "16rem", margin: "5px" }}>
       <Card.Img variant="top" src="holder.js/100px180" />
       <Card.Body>
         <Card.Title className={style.cardTitle}>
@@ -61,10 +76,15 @@ const LandingLinks = () => (
         </Card.Text>
         <Button className={style.cardButton}>Learn</Button>
       </Card.Body>
-    </Card>
+    </Card> */}
 
+    {/* Card that re-directs user to change.org; a petetion page*/}
     <Card style={{ width: "16rem", margin: "5px" }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
+      <Card.Img
+        variant="top"
+        src={change}
+        style={{ height: "150px", width: "auto" }}
+      />
       <Card.Body>
         <Card.Title className={style.cardTitle}>
           <b>Petitions</b>

@@ -153,6 +153,17 @@ class HomePage extends Component {
   );
 
   electMap = () => {
+    if (!this.state.elections) {
+      return (
+        <Card>
+          <Card.Body style={{ backgroundColor: "#F5F5F5" }}>
+            <h3>
+              <i>No Upcoming Contest</i>
+            </h3>
+          </Card.Body>{" "}
+        </Card>
+      );
+    }
     return (
       <div>
         {this.state.elections

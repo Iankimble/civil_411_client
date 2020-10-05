@@ -133,7 +133,17 @@ class HomePage extends Component {
                 value={address}
               />
             </Form.Group>
-            <Button variant="primary" type="submit" block onClick={this.submit}>
+            <Button
+              variant="primary"
+              type="submit"
+              style={{
+                backgroundColor: "#0A2644",
+                color: "white",
+                border: "none",
+              }}
+              block
+              onClick={this.submit}
+            >
               Send
             </Button>
           </Form>
@@ -149,11 +159,18 @@ class HomePage extends Component {
           .slice(1)
           .map((elect) => (
             <Card key={elect.id}>
-              <Card.Header as="h5">{elect.name}</Card.Header>
-              <Card.Body>
+              <Card.Header
+                as="h5"
+                style={{ backgroundColor: "#0A2644", color: "white" }}
+              >
+                {elect.name}
+              </Card.Header>
+              <Card.Body style={{ backgroundColor: "#F5F5F5" }}>
                 <Card.Title></Card.Title>
                 <Card.Text>
-                  {moment(elect.electionDay).format("MMMM Do YYYY")}
+                  <h1>
+                    <ul>{moment(elect.electionDay).format("MMMM Do YYYY")}</ul>
+                  </h1>
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -164,45 +181,66 @@ class HomePage extends Component {
   };
 
   contestMap = () => {
-    return (
-      <div>
-        {this.state.mainData.map((contest) => (
-          <div>
-            <Card key={contest.id}>
-              <Card.Header as="h5">{contest.office}</Card.Header>
-              <Card.Title>
-                {contest.district.name} {contest.district.scoper}
-              </Card.Title>
-              <Card.Body>
-                <Col>
-                  <Card>
-                    <Card.Body>
-                      {contest.candidates.map((candidate, i) => (
-                        <div key={i}>
-                          <Card.Title>{candidate.name}</Card.Title>
-                          <Card.Text>
-                            {candidate.party}
-                            <br />
-                            <Button
-                              variant="primary"
-                              href={candidate.candidateUrl}
-                              target="_blank"
-                            >
-                              Candidate's Website
-                            </Button>
-                          </Card.Text>
-                          <hr />
-                        </div>
-                      ))}
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Card.Body>
-            </Card>
-          </div>
-        ))}
-      </div>
-    );
+    if (!this.state.mainData) {
+      return (
+        <Card>
+          <Card.Body style={{ backgroundColor: "#F5F5F5" }}>
+            <h3>
+              <i>No Upcoming Contest</i>
+            </h3>
+          </Card.Body>{" "}
+        </Card>
+      );
+    } else
+      return (
+        <div>
+          {this.state.mainData.map((contest) => (
+            <div>
+              <Card key={contest.id}>
+                <Card.Header
+                  as="h5"
+                  style={{ backgroundColor: "#0A2644", color: "white" }}
+                >
+                  {contest.office}
+                </Card.Header>
+                <Card.Title>
+                  {contest.district.name} {contest.district.scoper}
+                </Card.Title>
+                <Card.Body>
+                  <Col>
+                    <Card>
+                      <Card.Body>
+                        {contest.candidates.map((candidate, i) => (
+                          <div key={i}>
+                            <Card.Title>{candidate.name}</Card.Title>
+                            <Card.Text>
+                              {candidate.party}
+                              <br />
+                              <Button
+                                variant="primary"
+                                href={candidate.candidateUrl}
+                                target="_blank"
+                                style={{
+                                  backgroundColor: "#0A2644",
+                                  color: "white",
+                                  border: "none",
+                                }}
+                              >
+                                Candidate's Website
+                              </Button>
+                            </Card.Text>
+                            <hr />
+                          </div>
+                        ))}
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </Card.Body>
+              </Card>
+            </div>
+          ))}
+        </div>
+      );
   };
 
   repMap = () => {
@@ -213,13 +251,18 @@ class HomePage extends Component {
             <Fade bottom>
               <div key={id}>
                 <Card key={rep.id}>
+                  <Card.Header
+                    style={{ backgroundColor: "#0A2644", color: "white" }}
+                  >
+                    <Card.Title>{rep.name}</Card.Title>
+                  </Card.Header>
                   <Card.Img
                     variant="top"
                     src={rep.photoUrl || flag}
                     className={style.candidateImg}
                   />
+
                   <Card.Body key={rep.id}>
-                    <Card.Title>{rep.name}</Card.Title>
                     <Card.Text>
                       <> {rep.party}</>
                       <br />
@@ -229,6 +272,11 @@ class HomePage extends Component {
                       variant="primary"
                       href={[rep.urls].toString()}
                       target="_blank"
+                      style={{
+                        backgroundColor: "#0A2644",
+                        color: "white",
+                        border: "none",
+                      }}
                     >
                       Representatives Website
                     </Button>
@@ -253,6 +301,7 @@ class HomePage extends Component {
           {this.state.pollingLocation.state}, {this.state.pollingLocation.zip}
         </Jumbotron>
       </Fade>
+      <hr />
       <Row>
         <Col>
           <h1>Upcoming Elections</h1>
@@ -261,6 +310,7 @@ class HomePage extends Component {
           </Jumbotron>
         </Col>
       </Row>
+      <hr />
       <Row>
         <Col>
           <h1>Upcoming Contests</h1>
@@ -269,6 +319,7 @@ class HomePage extends Component {
           </Jumbotron>
         </Col>
       </Row>
+      <hr />
       <Row>
         <Col>
           <h1>Your Representatives</h1>

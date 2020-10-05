@@ -14,14 +14,17 @@ const LandingLinks = () => (
     }}
   >
     {/* Card that re-directs user to federal voter registration page*/}
-    <Card style={{ width: "16rem", margin: "5px" }}>
+    <Card
+      style={{ width: "15rem", margin: "15px" }}
+      className={style.landingCards}
+    >
       <Card.Img
         variant="top"
         src={vote}
-        style={{ height: "150px", width: "auto" }}
+        style={{ height: "150px", width: "auto", padding: "10px" }}
       />
       <Card.Body>
-        <Card.Title className={style.carTitle}>
+        <Card.Title className={style.cardTitle}>
           <b>Check Voter Registration Status</b>
         </Card.Title>
         <Card.Text className={style.cardText}>
@@ -39,11 +42,14 @@ const LandingLinks = () => (
     </Card>
 
     {/* Card that re-directs user to PA state voter registration page*/}
-    <Card style={{ width: "16rem", margin: "5px" }}>
+    <Card
+      style={{ width: "15rem", margin: "15px" }}
+      className={style.landingCards}
+    >
       <Card.Img
         variant="top"
         src={register}
-        style={{ height: "150px", width: "auto" }}
+        style={{ height: "150px", width: "auto", padding: "10px" }}
       />
       <Card.Body>
         <Card.Title className={style.cardTitle}>
@@ -79,11 +85,14 @@ const LandingLinks = () => (
     </Card> */}
 
     {/* Card that re-directs user to change.org; a petetion page*/}
-    <Card style={{ width: "16rem", margin: "5px" }}>
+    <Card
+      style={{ width: "15rem", margin: "15px" }}
+      className={style.landingCards}
+    >
       <Card.Img
         variant="top"
         src={change}
-        style={{ height: "150px", width: "auto" }}
+        style={{ height: "150px", width: "auto", padding: "10px" }}
       />
       <Card.Body>
         <Card.Title className={style.cardTitle}>

@@ -1,17 +1,26 @@
+.navbar {
+  background-color: #0a2644;
+}
+
 .nav {
   margin: 5px;
+  color: white;
 }
 
 .cardTitle {
   height: 45px;
+  color: white;
 }
 
 .cardText {
   height: 100px;
+  color: white;
 }
 
 .cardButton {
   width: 200px;
+  background-color: #0a2644;
+  border: none;
 }
 
 .candidateImg {
@@ -42,4 +51,9 @@
     width: auto;
     padding: 10px;
   }
+}
+
+.landingCards {
+  background-color: #333c47;
+  color: "white";
 }

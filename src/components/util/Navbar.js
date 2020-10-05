@@ -6,7 +6,12 @@ import style from "../style/PrimaryStyling.module.css";
 class NavBar extends Component {
   render() {
     return (
-      <Navbar collapseOnSelect expand="lg" style={{ width: "auto" }}>
+      <Navbar
+        collapseOnSelect
+        expand="lg"
+        style={{ width: "auto" }}
+        className={style.navbar}
+      >
         <Navbar.Brand>
           <Link id="RouterNavLink" to="/">
             Civil 411

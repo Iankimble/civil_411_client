@@ -13,7 +13,7 @@ class NavBar extends Component {
         className={style.navbar}
       >
         <Navbar.Brand>
-          <Link id="RouterNavLink" to="/">
+          <Link id="RouterNavLink" to="/" className={style.nav}>
             Civil 411
           </Link>
         </Navbar.Brand>

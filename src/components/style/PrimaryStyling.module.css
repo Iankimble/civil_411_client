@@ -7,6 +7,18 @@
   color: white;
 }
 
+.nav:hover {
+  border: none;
+  color: white;
+  text-decoration: none;
+}
+
+.nav:focus {
+  border: none;
+  transition: 0.5s;
+  text-decoration: none;
+}
+
 .cardTitle {
   height: 45px;
   color: white;
